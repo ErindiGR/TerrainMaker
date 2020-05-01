@@ -3,12 +3,17 @@
 
 #include "bitmap.h"
 
-template<typename T>
 struct Texture
 {
-    Bitmap<T>* m_bitmap;
+    Bitmap* m_bitmap;
     
     uint       m_handle;
+
+    Texture()
+    {
+        m_bitmap=0;
+        m_handle=0;
+    }
 
     void GenTexture();
     
