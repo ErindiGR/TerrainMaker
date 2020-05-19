@@ -42,13 +42,15 @@ class Bitmap
 
     RGBA GetPixel(int x,int y);
 
-    RGBA GetPixel(float x,float y);
+    RGBA GetPixel(double x,double y);
+    std::vector<RGBA> GetPixels();
 
     void SetPixel(uint x, uint y,const RGBA& value);
 
     void Copy(Bitmap& bitmap);
 
     void Add(Bitmap& bitmap);
+    void Sub(Bitmap& bitmap);
     void Mul(Bitmap& bitmap);
     void Mul(const float f);
     void Pow(const float f);

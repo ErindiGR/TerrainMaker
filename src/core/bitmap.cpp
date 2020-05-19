@@ -2,12 +2,12 @@
 
 
 RGBA
-RGBA_Lerp(const RGBA a,const RGBA b,float t)
+RGBA_Lerp(const RGBA a,const RGBA b,double t)
 {
     RGBA ret = {0,0,0,0};
 
     for(int i=0;i<RGBA_COUNT;i++)
-        ret.v[i] = a.v[i] * t + b.v[i] * (1.0f-t);
+        ret.v[i] = a.v[i] * t + b.v[i] * (1.0-t);
 
     return ret;
 }
@@ -45,8 +45,8 @@ Bitmap::Resize(const uint16 width,const uint16 height)
     {
         for(int y=0;y<height;y++)
         {
-            float fx = x/(float)width;
-            float fy = y/(float)height;
+            double fx = x/(double)width;
+            double fy = y/(double)height;
 
             data[y*width+x] = GetPixel(fx,fy);
 
@@ -84,23 +84,40 @@ Bitmap::GetPixel(int x,int y)
 }
 
 RGBA
-Bitmap::GetPixel(float x,float y)
+Bitmap::GetPixel(double x,double y)
 {
+    if(x<0)
+        x=0;
+    if(x>1)
+        x=1;
+    
+    if(y>1)
+        y=1;
+    if(y<0)
+        y=0;
+
     x = x * m_width;
     y = y * m_height;
 
-    int floor_x = std::floorf(x);
-    int ceil_x = std::ceilf(x);
+    int floor_x = std::floor(x);
+    int ceil_x = std::ceil(x);
 
-    int floor_y = std::floorf(y);
-    int ceil_y = std::ceilf(y);
+    int floor_y = std::floor(y);
+    int ceil_y = std::ceil(y);
 
     RGBA tl = GetPixel(floor_x,ceil_y);
     RGBA tr = GetPixel(ceil_x,ceil_y);
     RGBA bl = GetPixel(floor_x,floor_y);
     RGBA br = GetPixel(ceil_x,floor_y);
     
-    return RGBA_Lerp(RGBA_Lerp(tl,tr,x-floor_x),RGBA_Lerp(bl,br,x-floor_x),y-floor_y);
+    return RGBA_Lerp(RGBA_Lerp(tr,tl,x-floor_x),RGBA_Lerp(br,bl,x-floor_x),y-floor_y);
+    //return RGBA_Lerp(RGBA_Lerp(tr,br,y-floor_y),RGBA_Lerp(tl,bl,y-floor_y),x-floor_x);
+}
+
+std::vector<RGBA>
+Bitmap::GetPixels()
+{
+    return m_pixels;
 }
 
 void
@@ -129,6 +146,26 @@ Bitmap::Add(Bitmap& bitmap)
 
             for(int i=0;i<RGBA_COUNT;i++)
                 m_pixels[y*m_width+x].v[i] = a.v[i] + b.v[i];
+
+        }
+    }
+}
+
+void
+Bitmap::Sub(Bitmap& bitmap)
+{
+    for(int x=0;x<m_width;x++)
+    {
+        for(int y=0;y<m_height;y++)
+        {
+            float fx = x/(float)m_width;
+            float fy = y/(float)m_height;
+
+            RGBA a = bitmap.GetPixel(fx,fy);
+            RGBA b = GetPixel(fx,fy);
+
+            for(int i=0;i<RGBA_COUNT;i++)
+                m_pixels[y*m_width+x].v[i] = b.v[i] - a.v[i];
 
         }
     }

@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.10)
 
 project(TerrainMaker)
 
+set(CMAKE_CXX_STANDARD 17)
+
 set(CMAKE_BUILD_TYPE Debug)
 
 file(GLOB CORE_SRC_TMC 
@@ -12,10 +14,13 @@ add_definitions("-DGL_SILENCE_DEPRECATION")
 
 add_library(tmcore SHARED ${CORE_SRC_TMC})
 
-
-
-
 target_link_libraries(tmcore "-framework OpenGL")
+
+
+add_library(tmexp SHARED src/exp/exp.cpp)
+target_include_directories(tmexp PUBLIC src/core/)
+target_include_directories(tmexp PUBLIC third_party/includes/stb_image/)
+target_link_libraries(tmexp tmcore)
 
 
 include_directories(third_party/includes/)

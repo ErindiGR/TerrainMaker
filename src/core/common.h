@@ -8,6 +8,6 @@ typedef unsigned int    uint32;
 typedef unsigned long   uint64;
 
 
-#define TMC_API extern
+#define TMC_API extern "C"
 
 #endif //COMMON_H

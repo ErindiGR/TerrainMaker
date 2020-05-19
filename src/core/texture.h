@@ -3,17 +3,22 @@
 
 #include "bitmap.h"
 
-struct Texture
+class Texture
 {
     Bitmap* m_bitmap;
-    
-    uint       m_handle;
+    uint    m_handle;
+    bool    m_dirty;
+
+    public:
 
     Texture()
     {
         m_bitmap=0;
         m_handle=0;
+        m_dirty=false;
     }
+
+    void SetBitmap(Bitmap* bitmap);
 
     void GenTexture();
     

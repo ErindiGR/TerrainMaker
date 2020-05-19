@@ -1,8 +1,6 @@
 #include "texture.h"
 
 #include <OpenGL/gl.h>
-#include "color.h"
-
 
 void
 Texture::GenTexture()
@@ -33,12 +31,17 @@ Texture::GenTexture()
     m_bitmap->GetDataBuffer());
 
     glGenerateMipmap(GL_TEXTURE_2D);
+
+    m_dirty=false;
 }
 
 
 void
 Texture::Bind()
 {
+    if(m_dirty)
+        GenTexture();
+
     glBindTexture(GL_TEXTURE_2D,m_handle);
 }
 
@@ -47,4 +50,12 @@ Texture::DelTexture()
 {
     glDeleteTextures(1,&m_handle);
     m_handle = 0;
+}
+
+
+void
+Texture::SetBitmap(Bitmap* bitmap)
+{
+    m_bitmap = bitmap;
+    m_dirty=true;
 }
