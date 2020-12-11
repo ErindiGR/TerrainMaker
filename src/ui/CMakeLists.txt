@@ -1,7 +1,14 @@
 link_directories(../../third_party/libs/)
 link_directories(../../third_party/libs/wx)
 
-add_definitions("-DGL_SILENCE_DEPRECATION")
+add_definitions(
+    "-DGL_SILENCE_DEPRECATION"
+    "-D_FILE_OFFSET_BITS=64"
+    "-DWXUSINGDLL"
+    "-D__WXMAC__"
+    "-D__WXOSX__"
+    "-D__WXOSX_COCOA__"
+)
 
 add_executable(terrain_maker main.cpp)
 
