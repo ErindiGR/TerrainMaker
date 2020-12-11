@@ -26,6 +26,6 @@ debug:
     sh build_debug.sh
 
 # Screen Shots:
-![ScreenShot:](/ScreenShots/0.png)
-![ScreenShot:](/ScreenShots/1.png)
-![ScreenShot:](/ScreenShots/2.png)
+![ScreenShot:](/screenshots/0.png)
+![ScreenShot:](/screenshots/1.png)
+![ScreenShot:](/screenshots/2.png)
