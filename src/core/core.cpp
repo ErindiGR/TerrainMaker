@@ -176,9 +176,11 @@ TMC_Draw()
     {
         const int p = g_Indices[i];
 
-        glTexCoord2f(g_Vertices[p].x+0.5f,g_Vertices[p].z+0.5f);
+        //glTexCoord2f(g_Vertices[p].x+0.5f,g_Vertices[p].z+0.5f);
+        glTexCoord2f(g_UV[p].x,g_UV[p].y);
         glNormal3f(g_Normals[p].x,g_Normals[p].y,g_Normals[p].z);
-        glVertex3f(g_Vertices[p].x*g_MeshWidth,g_Vertices[p].y*g_MeshHeight,g_Vertices[p].z*g_MeshWidth);
+        glVertex3f(g_Vertices[p].x*g_MeshWidth,g_Vertices[p].y*g_MeshHeight,
+                g_Vertices[p].z*g_MeshWidth);
     }
     glEnd();
 
@@ -381,6 +383,12 @@ TMC_GenMesh()
         g_Normals[p3] = ToVec3(a);
     }
     
+    
+    g_UV.resize(g_Vertices.size());
+    for(int i=0;i<g_Indices.size();i++)
+    {
+        g_UV[g_Indices[i]] = (vec2){g_Vertices[g_Indices[i]].x+0.5f,g_Vertices[g_Indices[i]].z+0.5f};
+    }
 }
 
 
@@ -461,7 +469,7 @@ TMC_SimErsosion(int x, int y)
 
         float dif = current - np[low];
 
-        if(dif <= 0.0004f)
+        if(dif <= 0.0001f)
             break;
 
         dif = glm::abs(dif);
@@ -473,7 +481,7 @@ TMC_SimErsosion(int x, int y)
         if(g_ErosionDeposit)
         {
             //erosion and deposit
-            //GLICHY
+            //GLITCHY
             o +=amount*(s/(float)g_ErosionSteps-0.5f)*2.0f;
             const float fs = s/(float)g_ErosionSteps;
             const float pi = 3.14f;
@@ -538,6 +546,7 @@ TMC_GenColorMap()
             else
                 col = glm::vec3(1,1,1);
             
+            //debug
             //col=dir;
 
             g_ColorMap.SetPixel(x,y,(RGBA){col.x,col.y,col.z,1});
@@ -613,4 +622,41 @@ Bitmap
 TMC_GetHeightMap()
 {
     return g_HeightMap;
+}
+
+Bitmap
+TMC_GetErosionMap()
+{
+    return g_ErosionMap;
+}
+
+Bitmap
+TMC_GetColorMap()
+{
+    return g_ColorMap;
+}
+
+
+std::vector<vec3>
+TMC_GetVertices()
+{
+    return g_Vertices;
+}
+
+std::vector<vec2>
+TMC_GetUV()
+{
+    return g_UV;
+}
+
+std::vector<vec3>
+TMC_GetNormals()
+{
+    return g_Normals;
+}
+
+std::vector<int>
+TMC_GetIndices()
+{
+    return g_Indices;
 }

@@ -1,7 +1,3 @@
-cmake -S ./ -B bin/
-cd bin/
+cmake -S ./ -B build/release -DCMAKE_BUILD_TYPE=Release
+cd build/release
 make
-rm -rf plugins
-mkdir plugins
-cp ./libtmexp.dylib plugins/ 
-rm ./libtmexp.dylib
