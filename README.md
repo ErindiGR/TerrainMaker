@@ -35,4 +35,4 @@ debug:
 # Screen Shots:
 ![ScreenShot:](/screenshots/0.png)
 ![ScreenShot:](/screenshots/1.png)
-![ScreenShot:](/screenshots/2.png)
+![ScreenShot:](./screenshots/2.png)
